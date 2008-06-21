@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.session.backends.base import SessionBase
+from django.core.exceptions import SuspiciousOperation
 
 from django_appengine_utils import Session
 
@@ -30,6 +31,7 @@ class SessionStore(SessionBase):
         session.put()
 
     def exists(self, session_key):
+        """Check if the session key already exists in the datastore"""
         session = self._load_session(session_key)
         return session is not None
 
