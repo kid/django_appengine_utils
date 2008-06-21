@@ -31,14 +31,20 @@ class SessionStore(SessionBase):
         session.put()
 
     def exists(self, session_key):
-        """Check if the session key already exists in the datastore"""
+        """Checks if the session key already exists in the datastore"""
         session = self._load_session(session_key)
         return session is not None
+
+    def delete(self):
+        session = _load_session(self.session_key)
+        if session:
+            session.delete()
 
     def _load_session(self, session_key):
         return Session.get_by_key_name('id:%s' % session_key)
 
     def _invalid_session(self):
+        """Creates a new session for extra secucity"""
         self.session_key = self._get_new_session_key()
         self._session_cache = {}
         self.save()
