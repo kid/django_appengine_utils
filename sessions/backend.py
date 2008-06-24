@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from django.contrib.session.backends.base import SessionBase
+from django.contrib.sessions.backends.base import SessionBase
 from django.core.exceptions import SuspiciousOperation
 
-from django_appengine_utils.models import Session
+from django_appengine_utils.sessions.models import Session
 
 class SessionStore(SessionBase):
     def __init__(self, session_key=None):
