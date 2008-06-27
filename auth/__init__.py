@@ -40,9 +40,10 @@ def logout(request):
         request.user = AnonymousUser()
 
 def get_user(request):
-    user_id = request.session[SESSION_KEY]
-    user = User.get_by_id(user_id)
-    if user is None:
-        from django.contrib.auth.models import AnonymousUser
+    from django.contrib.auth.models import AnonymousUser
+    try:
+        user_id = request.session[SESSION_KEY]
+        user = User.get_by_id(user_id)
+    except KeyError:
         user = AnonymousUser()
-    return user
+    return user or AnonymousUser
