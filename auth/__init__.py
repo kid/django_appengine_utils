@@ -1,5 +1,7 @@
 from google.appengine.ext import db
 
+from models import User
+
 SESSION_KEY = '_auth_user_id'
 
 def authenticate(username=None, password=None):
