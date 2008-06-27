@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from google.appengine.ext import db
 
 class Session(db.Model):
