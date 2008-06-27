@@ -26,7 +26,7 @@ class SessionStore(SessionBase):
         session = Session(
             session_key = self.session_key,
             session_data = self.encode(self._session),
-            expire_data = self.get_expiry_date()
+            expire_date = self.get_expiry_date()
         )
         session.put()
 
