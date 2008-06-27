@@ -2,7 +2,7 @@ import datetime
 import urllib
 
 from django.contrib import auth
-from django.contrib.auth.models import check_password, get_hexdigest, SiteProfileNotAvailable, UNUSABLE_PASSWORD
+from django.contrib.auth.models import check_password, get_hexdigest, UNUSABLE_PASSWORD
 from django.db.models.manager import EmptyManager
 from django.utils.encoding import smart_str
 

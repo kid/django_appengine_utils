@@ -1,5 +1,7 @@
 from google.appengine.ext import db
 
+SESSION_KEY = '_auth_user_id'
+
 def authenticate(username=None, password=None):
     """
     If the given username and password is valid, return a User object.
