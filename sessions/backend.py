@@ -11,7 +11,7 @@ class SessionStore(SessionBase):
 
     def load(self):
         session_data = {}
-        session = User.gql('WHERE session_key = :1 AND expire_data > :2', self.session_key, datetime.now()).get()
+        session = Session.gql('WHERE session_key = :1 AND expire_data > :2', self.session_key, datetime.now()).get()
         if session:
             try:
                 session_data = self.decode(session.session_data)
