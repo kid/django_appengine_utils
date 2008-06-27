@@ -10,7 +10,7 @@ def authenticate(username=None, password=None):
     """
     query = db.Query(User)
     user = query.filter('username =', username).get()
-    if user.check_password(password):
+    if user is not None and user.check_password(password):
         return user
     else:
         return None

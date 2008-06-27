@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib.sessions.backends.base import SessionBase
 from django.core.exceptions import SuspiciousOperation
 
-from django_appengine_utils.sessions.models import Session
+from models import Session
 
 class SessionStore(SessionBase):
     def __init__(self, session_key=None):
