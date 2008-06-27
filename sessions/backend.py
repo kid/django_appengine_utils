@@ -11,15 +11,14 @@ class SessionStore(SessionBase):
 
     def load(self):
         session_data = {}
-        session = self._load_session(self.session_key)
+        session = User.gql('WHERE session_key = :1 AND expire_data > :2', self.session_key, datetime.now()).get()
         if session:
-            if session.expire_date is None or session.expire_date > datetime.now():
-                try:
-                    session_data = self.decode(session.session_data)
-                except SuspiciousOperation:
-                    self._invalid_session()
-            else:
+            try:
+                session_data = self.decode(session.session_data)
+            except SuspiciousOperation:
                 self._invalid_session()
+        else:
+            self._invalid_session()
         return session_data or {}
 
     def save(self):
