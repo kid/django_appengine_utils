@@ -13,7 +13,7 @@ class SessionStore(SessionBase):
         session_data = {}
         session = self._load_session(self.session_key)
         if session:
-            if session.expire_date > datetime.now():
+            if session.expire_date is None or session.expire_date > datetime.now():
                 try:
                     session_data = self.decode(session.session_data)
                 except SuspiciousOperation:
