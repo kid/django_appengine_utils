@@ -26,7 +26,7 @@ class UserManager(object):
         u.is_superuser = True
         u.put()
 
-class User(db.Model):
+class User(db.Expando):
     username = db.StringProperty(required=True)
     first_name = db.StringProperty()
     last_name = db.StringProperty()
