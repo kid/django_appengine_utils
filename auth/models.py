@@ -2,11 +2,12 @@ import datetime
 import urllib
 
 from django.contrib import auth
-from django.contrib.auth.models import UNUSABLE_PASSWORD
 from django.db.models.manager import EmptyManager
 from django.utils.encoding import smart_str
 
 from google.appengine.ext import db
+
+UNUSABLE_PASSWORD = '!' # This will never be a valid hash
 
 def get_hexdigest(algorithm, salt, raw_password):
     """
