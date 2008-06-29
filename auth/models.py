@@ -2,11 +2,49 @@ import datetime
 import urllib
 
 from django.contrib import auth
-from django.contrib.auth.models import check_password, get_hexdigest, UNUSABLE_PASSWORD
+from django.contrib.auth.models import UNUSABLE_PASSWORD
 from django.db.models.manager import EmptyManager
 from django.utils.encoding import smart_str
 
 from google.appengine.ext import db
+
+def get_hexdigest(algorithm, salt, raw_password):
+    """
+    Returns a string of the hexdigest of the given plaintext password and salt
+    using the given algorithm ('md5', 'sha1' or 'crypt').
+    """
+    raw_password, salt = smart_str(raw_password), smart_str(salt)
+    if algorithm == 'crypt':
+        try:
+            import crypt
+        except ImportError:
+            raise ValueError('"crypt" password algorithm not supported in this environment')
+        return crypt.crypt(raw_password, salt)
+    # The rest of the supported algorithms are supported by hashlib, but
+    # hashlib is only available in Python 2.5.
+    try:
+        import hashlib
+    except ImportError:
+        if algorithm == 'md5':
+            import md5
+            return md5.new(salt + raw_password).hexdigest()
+        elif algorithm == 'sha1':
+            import sha
+            return sha.new(salt + raw_password).hexdigest()
+    else:
+        if algorithm == 'md5':
+            return hashlib.md5(salt + raw_password).hexdigest()
+        elif algorithm == 'sha1':
+            return hashlib.sha1(salt + raw_password).hexdigest()
+    raise ValueError("Got unknown password algorithm type in password.")
+
+def check_password(raw_password, enc_password):
+    """
+    Returns a boolean of whether the raw_password was correct. Handles
+    encryption formats behind the scenes.
+    """
+    algo, salt, hsh = enc_password.split('$')
+    return hsh == get_hexdigest(algo, salt, raw_password)
 
 class UserManager(object):
     def create_user(self, username, email, password=None):
